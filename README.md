@@ -10,7 +10,7 @@ If not done already, clone this repository using:
 $ git clone https://github.com/thoughtram/angular-master-class-starter.git
 ```
 
-Done? Great, now install the dependencies (this might take a little while):
+Done? Great, now install the dependencies (this might take a little while)(Needs node 12.18.* not 14.*.*):
 
 ```
 $ cd angular-master-class-starter
