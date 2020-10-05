@@ -13,7 +13,9 @@ export class ContactsListComponent implements OnInit {
   constructor(private contactsService: ContactsService) {}
 
   ngOnInit(): void {
-    this.contacts = this.contactsService.getContacts();
+    this.contactsService.getContacts().subscribe((contacts) => {
+      this.contacts = contacts;
+    })
   }
 
   trackedById(index: number, contact: Contact) {

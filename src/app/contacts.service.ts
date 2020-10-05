@@ -1,16 +1,26 @@
 import { Injectable } from '@angular/core';
-import { CONTACT_DATA } from './data/contact-data';
+import { HttpClient } from '@angular/common/http';
 import { Contact } from './models/contact';
+import { map } from 'rxjs/operators';
+
+interface ContactResponse { item: Contact }
+interface ContactsResponse { items: Contact[] }
 
 @Injectable()
 export class ContactsService {
-  private contacts: Contact[] = CONTACT_DATA;
+  private API_ENDPOINT = 'http://localhost:4201';
 
-  public getContacts(): Contact[] {
-    return this.contacts;
+  constructor(private http: HttpClient) {}
+
+  public getContacts() {
+    let url = this.API_ENDPOINT + '/api/contacts';
+    return this.http.get<ContactsResponse>(url)
+      .pipe(map((data) => data.items));
   }
 
-  public getContact(id: string): Contact {
-    return this.contacts.find(contact => contact.id.toString() === id);
+  public getContact(id: string) {
+    let url = this.API_ENDPOINT + '/api/contacts/' + id;
+    return this.http.get<ContactResponse>(url)
+      .pipe(map((data) => data.item));
   }
 }
