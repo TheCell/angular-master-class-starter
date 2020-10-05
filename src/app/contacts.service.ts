@@ -9,4 +9,8 @@ export class ContactsService {
   public getContacts(): Contact[] {
     return this.contacts;
   }
+
+  public getContact(id: string): Contact {
+    return this.contacts.find(contact => contact.id.toString() === id);
+  }
 }
