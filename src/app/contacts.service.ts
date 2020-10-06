@@ -29,4 +29,11 @@ export class ContactsService {
     let url = `${this.API_ENDPOINT}/contacts/${contact.id}`;
     return this.http.put<ContactResponse>(url, contact).pipe(map(data => data.item));
   }
+
+  public search(term: string) : Observable<Array<Contact>> {
+    let url = `${this.API_ENDPOINT}/search?text=${term}`;
+    console.log(url);
+    return this.http.get<ContactsResponse>(url)
+      .pipe(map((data) => data.items));
+  }
 }
