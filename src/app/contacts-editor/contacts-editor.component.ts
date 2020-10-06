@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Observable } from 'rxjs';
 import { ContactsService } from '../contacts.service';
 import { Contact } from '../models/contact';
 
@@ -10,7 +10,7 @@ import { Contact } from '../models/contact';
   styleUrls: ['./contacts-editor.component.scss']
 })
 export class ContactsEditorComponent implements OnInit {
-  contact: Contact = <Contact>{ address: {}};
+  contact$: Observable<Contact>;
 
   constructor(
     private route: ActivatedRoute,
@@ -19,11 +19,7 @@ export class ContactsEditorComponent implements OnInit {
 
   ngOnInit(): void {
     let id = this.route.snapshot.paramMap.get('id');
-    this.contactsService
-    .getContact(id)
-    .subscribe((contact) => {
-      this.contact = contact;
-    })
+    this.contact$ = this.contactsService.getContact(id);
   }
 
   cancel(contact: Contact) {
@@ -32,7 +28,7 @@ export class ContactsEditorComponent implements OnInit {
   }
 
   save(contact: Contact) {
-    this.contactsService.updateContact(contact).subscribe((update) => {
+    this.contactsService.updateContact(contact).subscribe(() => {
       // this.goToDetails(contact);
       this.goToDetails();
     })
