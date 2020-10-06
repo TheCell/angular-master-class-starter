@@ -32,7 +32,6 @@ export class ContactsService {
 
   public search(term: string) : Observable<Array<Contact>> {
     let url = `${this.API_ENDPOINT}/search?text=${term}`;
-    console.log(url);
     return this.http.get<ContactsResponse>(url)
       .pipe(map((data) => data.items));
   }
