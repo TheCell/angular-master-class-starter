@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactsService } from '../contacts.service';
 import { Contact } from '../models/contact';
-import { Observable } from 'rxjs';
+import { Observable, Subject, merge } from 'rxjs';
+import { debounceTime, delay, distinctUntilChanged, startWith, switchMap, takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'trm-contacts-list',
@@ -10,18 +11,31 @@ import { Observable } from 'rxjs';
 })
 export class ContactsListComponent implements OnInit {
   contacts$: Observable<Array<Contact>>;
+  terms$: Subject<string> = new Subject<string>();
 
-  constructor(private contactsService: ContactsService) {}
+  constructor(private contactsService: ContactsService) { }
 
   ngOnInit(): void {
-    this.contacts$ = this.contactsService.getContacts();
+    // const search$ = this.terms$.pipe(
+    //   debounceTime(400),
+    //   distinctUntilChanged(),
+    //   switchMap((term) => this.contactsService.search(term))
+    // );
+
+    // const initialList$ = this.contactsService.getContacts().pipe(delay(2000), takeUntil(this.terms$))
+
+    // this.contacts$ = merge(search$, initialList$);
+
+    // or
+    this.contacts$ = this.terms$.pipe(
+      debounceTime(400),
+      distinctUntilChanged(),
+      startWith(''),
+      switchMap((term) => this.contactsService.search(term))
+    )
   }
 
   trackedById(index: number, contact: Contact) {
     return contact.id;
   };
-
-  search(term: string) {
-    this.contacts$ = this.contactsService.search(term);
-  }
 }
