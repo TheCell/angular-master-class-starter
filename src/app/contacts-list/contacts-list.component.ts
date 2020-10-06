@@ -27,12 +27,14 @@ export class ContactsListComponent implements OnInit {
     // this.contacts$ = merge(search$, initialList$);
 
     // or
-    this.contacts$ = this.terms$.pipe(
-      debounceTime(400),
-      distinctUntilChanged(),
-      startWith(''),
-      switchMap((term) => this.contactsService.search(term))
-    )
+    // this.contacts$ = this.terms$.pipe(
+    //   debounceTime(400),
+    //   distinctUntilChanged(),
+    //   startWith(''),
+    //   switchMap((term) => this.contactsService.rawSearch(term))
+    // );
+
+    this.contacts$ = this.contactsService.search(this.terms$, 300);
   }
 
   trackedById(index: number, contact: Contact) {
