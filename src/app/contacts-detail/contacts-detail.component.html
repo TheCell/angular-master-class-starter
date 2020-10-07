@@ -23,9 +23,11 @@
       </dl>
     </mat-card-content>
     <mat-card-actions fxLayout fxLayoutAlign="center center">
-      <a [routerLink]="['edit']" mat-button title="Edit {{contact?.name}}">Edit</a>
+      <button (click)="edit.emit()">Edit</button>
+      <button (click)="back.emit()">Back</button>
+      <!-- <a [routerLink]="['edit']" mat-button title="Edit {{contact?.name}}">Edit</a> -->
       <!-- <a [routerLink]="['/contact', contact.id, 'edit']" mat-button title="Edit">Edit</a> -->
-      <a [routerLink]="['/']" mat-button title="Go back to list">Go Back</a>
+      <!-- <a [routerLink]="['/']" mat-button title="Go back to list">Go Back</a> -->
     </mat-card-actions>
   </mat-card>
 </div>
