@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ContactsService } from '../contacts.service';
+import { EventBusService } from '../event-bus.service';
 import { Contact } from '../models/contact';
 
 @Component({
@@ -15,11 +17,14 @@ export class ContactsEditorComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private contactsService: ContactsService) { }
+    private contactsService: ContactsService,
+    private eventBusService: EventBusService) { }
 
   ngOnInit(): void {
     let id = this.route.snapshot.paramMap.get('id');
-    this.contact$ = this.contactsService.getContact(id);
+    this.contact$ = this.contactsService.getContact(id).pipe(tap(contact => {
+      this.eventBusService.emit('appTitleChange', contact.name + ' Edit');
+    }))
   }
 
   cancel(contact: Contact) {
